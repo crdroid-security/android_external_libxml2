@@ -1,4 +1,4 @@
-URL: ftp://xmlsoft.org/libxml2/libxml2-2.9.7.tar.gz
-Version: 2.9.7
+URL: ftp://xmlsoft.org/libxml2/libxml2-2.9.8.tar.gz
+Version: 2.9.8-rc1
 BugComponent: 1351
 AllAdvisories: yes
