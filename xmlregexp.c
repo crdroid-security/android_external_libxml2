@@ -1673,6 +1673,8 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 			return(-1);
 		    inter = ctxt->state;
 		    counter = xmlRegGetCounter(ctxt);
+                    if (counter < 0)
+                        return(-1);
 		    ctxt->counters[counter].min = atom->min - 1;
 		    ctxt->counters[counter].max = atom->max - 1;
 		    /* count the number of times we see it again */
@@ -1691,6 +1693,8 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 		     * epsilon transition.
 		     */
 		    counter = xmlRegGetCounter(ctxt);
+                    if (counter < 0)
+                        return(-1);
 		    ctxt->counters[counter].min = atom->min - 1;
 		    ctxt->counters[counter].max = atom->max - 1;
 		    /* count the number of times we see it again */
@@ -5987,6 +5991,8 @@ xmlAutomataNewCountTrans2(xmlAutomataPtr am, xmlAutomataStatePtr from,
      * associate a counter to the transition.
      */
     counter = xmlRegGetCounter(am);
+    if (counter < 0)
+        goto error;
     am->counters[counter].min = min;
     am->counters[counter].max = max;
 
@@ -6006,6 +6012,10 @@ xmlAutomataNewCountTrans2(xmlAutomataPtr am, xmlAutomataStatePtr from,
     if (min == 0)
 	xmlFAGenerateEpsilonTransition(am, from, to);
     return(to);
+
+error:
+    xmlRegFreeAtom(atom);
+    return(NULL);
 }
 
 /**
@@ -6053,6 +6063,8 @@ xmlAutomataNewCountTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
      * associate a counter to the transition.
      */
     counter = xmlRegGetCounter(am);
+    if (counter < 0)
+        goto error;
     am->counters[counter].min = min;
     am->counters[counter].max = max;
 
@@ -6072,6 +6084,10 @@ xmlAutomataNewCountTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
     if (min == 0)
 	xmlFAGenerateEpsilonTransition(am, from, to);
     return(to);
+
+error:
+    xmlRegFreeAtom(atom);
+    return(NULL);
 }
 
 /**
@@ -6139,6 +6155,8 @@ xmlAutomataNewOnceTrans2(xmlAutomataPtr am, xmlAutomataStatePtr from,
      * associate a counter to the transition.
      */
     counter = xmlRegGetCounter(am);
+    if (counter < 0)
+        goto error;
     am->counters[counter].min = 1;
     am->counters[counter].max = 1;
 
@@ -6151,6 +6169,10 @@ xmlAutomataNewOnceTrans2(xmlAutomataPtr am, xmlAutomataStatePtr from,
     xmlRegAtomPush(am, atom);
     am->state = to;
     return(to);
+
+error:
+    xmlRegFreeAtom(atom);
+    return(NULL);
 }
 
 
@@ -6198,6 +6220,8 @@ xmlAutomataNewOnceTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
      * associate a counter to the transition.
      */
     counter = xmlRegGetCounter(am);
+    if (counter < 0)
+        goto error;
     am->counters[counter].min = 1;
     am->counters[counter].max = 1;
 
@@ -6210,6 +6234,10 @@ xmlAutomataNewOnceTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
     xmlRegAtomPush(am, atom);
     am->state = to;
     return(to);
+
+error:
+    xmlRegFreeAtom(atom);
+    return(NULL);
 }
 
 /**
